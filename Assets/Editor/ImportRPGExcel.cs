@@ -19,8 +19,9 @@ public class ImportRPGExcel : AssetPostprocessor
     static readonly string filePath = "Assets/Editor/Data/RPGData.xlsx";
     static readonly string playerExportPath = "Assets/Resources/Data/PlayerLevelData.asset";
 	static readonly string enemyExportPath = "Assets/Resources/Data/MonsterLevelData.asset";
+    static GameObject root;
 
-	[MenuItem("DataImport/ExcelImport #&g")]
+    [MenuItem("DataImport/ExcelImport #&g")]
     static void ExcelImport()
     {
         Debug.Log("Excel data covert start.");
@@ -43,15 +44,18 @@ public class ImportRPGExcel : AssetPostprocessor
         string[] movedAssets, string[] movedFromAssetPaths)
     {
 
+        
         //임포트 된 모픈 파일을 검색함
         foreach (string s in importedAssets)
         {
             //json 파일 감별
             if (s.Contains(".json"))
             {
+                //Debug.Log("json import !!!!!!!!!!!!");
                 Dictionary<int, GameObject> object_dic = new();
-                GameObject root = new GameObject("Map");
-
+                //GameObject root = new GameObject("Map");
+                root = GameObject.Find("Map");
+                if (root == null) root = new GameObject("Map");
 
                 // 파일 읽기
                 //TextAsset jsonFile = Resources.Load<TextAsset>(s);
@@ -80,7 +84,9 @@ public class ImportRPGExcel : AssetPostprocessor
                                 if (a.prefab_name != "empty")
                                 {
                                     prefab = Resources.Load<GameObject>("Prefabs/" + a.prefab_name);
-                                    prefab = GameObject.Instantiate(prefab);
+                                    //prefab = GameObject.Instantiate(prefab);
+
+                                    prefab = PrefabUtility.InstantiatePrefab(prefab) as GameObject;
                                 }
                                 else
                                 {
@@ -106,6 +112,8 @@ public class ImportRPGExcel : AssetPostprocessor
                             
                         }
                     }
+
+                    EditObject.Instance.last_command = "Mapdata Json으로 로드";
                 }
                 catch (Exception e)
                 {

@@ -10,7 +10,7 @@ public class MapToJson : MonoBehaviour
     public static MapList mp_list = new();
     public static int sequence;
     public static int depth;
-    private static string playerDataPath = "Assets/Resources/Data/PlayerLevelData.json";
+    //private static string playerDataPath = "Assets/Resources/Data/PlayerLevelData.json";
     static readonly string map_data_json = "Assets/Resources/Data/mapData.json";
     //string path = Path.Combine(Application.dataPath, $"MapData_{WIndowManager.instance.nickName}_{WIndowManager.instance.mapNum}.json");
 
@@ -32,13 +32,15 @@ public class MapToJson : MonoBehaviour
     {
         Initialize();
 
+        
+
         // 시작 시 자식들을 가져와 리스트에 저장
         GetAllChildrenRecursive(GameObject.Find("Map").transform,0);
 
-        foreach (var child in mp_list.mp)
-        {
-            Debug.Log("Child Name: " + child.prefab_name + " " + child.primary_key + " " + child.depth + " " + child.parent_key + " " + child.position + " " + child.quaternion);
-        }
+        //foreach (var child in mp_list.mp)
+        //{
+        //    Debug.Log("Child Name: " + child.prefab_name + " " + child.primary_key + " " + child.depth + " " + child.parent_key + " " + child.position + " " + child.quaternion);
+        //}
 
         string str_mp_json = JsonUtility.ToJson(mp_list);
 
@@ -46,7 +48,7 @@ public class MapToJson : MonoBehaviour
         
         JsonFileSave(map_data_json, str_mp_json);
         //JsonFileSave("{}", playerDataPath);
-
+        EditObject.Instance.last_command = "Mapdata Json으로 저장";
 
     }
 

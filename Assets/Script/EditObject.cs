@@ -4,15 +4,29 @@ using UnityEngine;
 
 public class EditObject : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public static EditObject _instance;
+
+    public static EditObject Instance
     {
-        
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<EditObject>();
+
+                if (_instance == null)
+                {
+                    GameObject obj = new GameObject("EditObject");
+                    _instance = obj.AddComponent<EditObject>();
+                }
+            }
+
+            return _instance;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   
+
+	public string last_command;
+    
 }
